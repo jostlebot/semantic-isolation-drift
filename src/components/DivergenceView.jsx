@@ -72,11 +72,11 @@ function InteriorPopup({ isOpen, onClose, entry, speaker, side }) {
             display: "flex",
             justifyContent: "space-between",
             alignItems: "center",
-            marginBottom: 16,
+            marginBottom: 18,
           }}>
             <span style={{
               fontFamily: FONTS.mono,
-              fontSize: 10,
+              fontSize: 12,
               letterSpacing: "0.12em",
               color: labelColor,
               textTransform: "uppercase",
@@ -107,10 +107,10 @@ function InteriorPopup({ isOpen, onClose, entry, speaker, side }) {
                 { label: isClient ? "Projection" : "Clinical Thinking", text: isClient ? interior.projection : interior.clinicalThinking },
                 { label: isClient ? "Need" : "Countertransference", text: isClient ? interior.need : interior.countertransference },
               ].map(({ label, text }) => text && (
-                <div key={label} style={{ marginBottom: 14 }}>
+                <div key={label} style={{ marginBottom: 16 }}>
                   <span style={{
                     fontFamily: FONTS.mono,
-                    fontSize: 9,
+                    fontSize: 11,
                     color: PALETTE.textMuted,
                     letterSpacing: "0.05em",
                     textTransform: "uppercase",
@@ -119,10 +119,10 @@ function InteriorPopup({ isOpen, onClose, entry, speaker, side }) {
                   </span>
                   <div style={{
                     fontFamily: FONTS.body,
-                    fontSize: 13,
+                    fontSize: 14,
                     lineHeight: 1.6,
                     color: PALETTE.textSecondary,
-                    marginTop: 4,
+                    marginTop: 5,
                   }}>
                     {text}
                   </div>
@@ -135,9 +135,9 @@ function InteriorPopup({ isOpen, onClose, entry, speaker, side }) {
           {aiProcess && (
             <div style={{
               fontFamily: FONTS.mono,
-              fontSize: 12,
-              lineHeight: 1.6,
-              color: "rgba(126, 184, 212, 0.7)",
+              fontSize: 13,
+              lineHeight: 1.7,
+              color: "rgba(126, 184, 212, 0.8)",
               fontStyle: "italic",
             }}>
               {aiProcess}
@@ -194,17 +194,17 @@ function MessageBubble({ text, speaker, entry, side, onClickInterior }) {
       <button
         onClick={() => hasInterior && onClickInterior()}
         style={{
-          fontSize: 9,
+          fontSize: 11,
           fontFamily: FONTS.mono,
           color: hasInterior ? labelColor : PALETTE.textMuted,
-          marginBottom: 4,
+          marginBottom: 5,
           letterSpacing: "0.08em",
           textTransform: "uppercase",
           background: hasInterior ? `${labelColor}10` : "transparent",
           border: hasInterior ? `1px solid ${labelColor}30` : "1px solid transparent",
           borderRadius: 4,
           cursor: hasInterior ? "pointer" : "default",
-          padding: "4px 8px",
+          padding: "5px 10px",
           display: "flex",
           alignItems: "center",
           gap: 6,
@@ -212,22 +212,22 @@ function MessageBubble({ text, speaker, entry, side, onClickInterior }) {
         }}
       >
         {hasInterior && (
-          <span style={{ fontSize: 12 }}>🚪</span>
+          <span style={{ fontSize: 14 }}>🚪</span>
         )}
         {isClient ? "client" : isAI ? "AI" : "therapist"}
       </button>
       <div
         style={{
           maxWidth: "90%",
-          padding: "10px 14px",
+          padding: "12px 16px",
           borderRadius: isClient
             ? "14px 14px 4px 14px"
             : "14px 14px 14px 4px",
           background: bgColor,
           border: `1px solid ${borderColor}`,
           fontFamily: FONTS.body,
-          fontSize: 13,
-          lineHeight: 1.5,
+          fontSize: 15,
+          lineHeight: 1.55,
           color: PALETTE.textPrimary,
         }}
       >
@@ -267,18 +267,18 @@ function ConversationColumn({ side, step }) {
       {/* Column header */}
       <div
         style={{
-          padding: "10px 12px",
+          padding: "12px 16px",
           borderBottom: `1px solid ${PALETTE.border}`,
           display: "flex",
           alignItems: "center",
-          gap: 8,
+          gap: 10,
           background: PALETTE.bg,
         }}
       >
         <div
           style={{
-            width: 6,
-            height: 6,
+            width: 8,
+            height: 8,
             borderRadius: "50%",
             background: isAI ? PALETTE.accentCool : PALETTE.nodeTherapist,
           }}
@@ -286,7 +286,7 @@ function ConversationColumn({ side, step }) {
         <span
           style={{
             fontFamily: FONTS.mono,
-            fontSize: 9,
+            fontSize: 12,
             letterSpacing: "0.1em",
             color: isAI ? PALETTE.accentCool : PALETTE.nodeTherapist,
             textTransform: "uppercase",
@@ -620,17 +620,18 @@ export default function DivergenceView() {
       {/* Header */}
       <div
         style={{
-          padding: "10px 16px",
+          padding: "14px 20px",
           borderBottom: `1px solid ${PALETTE.border}`,
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "space-between",
+          gap: 8,
         }}
       >
         <div
           style={{
             fontFamily: FONTS.display,
-            fontSize: 16,
+            fontSize: 20,
             color: PALETTE.textPrimary,
           }}
         >
@@ -639,31 +640,31 @@ export default function DivergenceView() {
         <div
           style={{
             fontFamily: FONTS.mono,
-            fontSize: 9,
-            color: PALETTE.textMuted,
+            fontSize: 12,
+            color: PALETTE.textSecondary,
             display: "flex",
             alignItems: "center",
-            gap: 6,
+            gap: 8,
           }}
         >
-          <span style={{ fontSize: 12 }}>🚪</span>
-          <span>Click the door to look inside</span>
+          <span style={{ fontSize: 16 }}>🚪</span>
+          <span>Click the door to look inside each person</span>
         </div>
       </div>
 
       {/* Shared origin - shown once at top */}
       <div
         style={{
-          padding: "14px 20px",
+          padding: "16px 24px",
           borderBottom: `1px solid ${PALETTE.border}`,
           background: "rgba(232, 193, 112, 0.03)",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 12 }}>
           <div
             style={{
-              width: 10,
-              height: 10,
+              width: 12,
+              height: 12,
               borderRadius: "50%",
               background: PALETTE.nodeUser,
               boxShadow: `0 0 8px ${PALETTE.nodeUser}50`,
@@ -672,7 +673,7 @@ export default function DivergenceView() {
           <span
             style={{
               fontFamily: FONTS.mono,
-              fontSize: 10,
+              fontSize: 12,
               letterSpacing: "0.12em",
               color: PALETTE.nodeUser,
               textTransform: "uppercase",
@@ -684,7 +685,7 @@ export default function DivergenceView() {
         <div
           style={{
             fontFamily: FONTS.body,
-            fontSize: 14,
+            fontSize: 16,
             fontStyle: "italic",
             lineHeight: 1.5,
             color: PALETTE.textSecondary,

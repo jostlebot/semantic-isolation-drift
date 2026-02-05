@@ -153,11 +153,11 @@ export function MetricBar({ label, value, maxValue = 1, color, animate = true })
       <div style={{
         display: "flex",
         justifyContent: "space-between",
-        marginBottom: 3,
+        marginBottom: 4,
       }}>
         <span style={{
           fontFamily: FONTS.mono,
-          fontSize: 8,
+          fontSize: 10,
           letterSpacing: "0.1em",
           color: PALETTE.textMuted,
           textTransform: "uppercase",
@@ -237,13 +237,13 @@ export function VisualMetrics({ mode, step, maxSteps }) {
 
       {/* Status label */}
       <div style={{
-        marginTop: 10,
+        marginTop: 12,
         fontFamily: FONTS.mono,
-        fontSize: 9,
+        fontSize: 11,
         letterSpacing: "0.08em",
         color: isAI ? PALETTE.warning : PALETTE.safe,
         textAlign: "center",
-        opacity: 0.8,
+        opacity: 0.9,
       }}>
         {isAI
           ? progress > 0.7 ? "DRIFT COMPLETE" : progress > 0.4 ? "NARROWING" : "MIRRORING"
