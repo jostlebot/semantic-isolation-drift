@@ -220,7 +220,7 @@ function ConversationColumn({ side, step, viewMode, expandedPanels, onTogglePane
 export default function DivergenceView() {
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [viewMode, setViewMode] = useState("visual");
+  const [viewMode, setViewMode] = useState("detailed");
   const [showIntro, setShowIntro] = useState(true);
   const [expandedPanels, setExpandedPanels] = useState({});
   const intervalRef = useRef(null);
@@ -521,8 +521,8 @@ export default function DivergenceView() {
           }}
         >
           {[
-            { key: "visual", label: "Visual" },
             { key: "detailed", label: "Detailed" },
+            { key: "visual", label: "Visual" },
           ].map(({ key, label }) => (
             <button
               key={key}
