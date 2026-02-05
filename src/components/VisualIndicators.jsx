@@ -216,14 +216,16 @@ export function VisualMetrics({ mode, step, maxSteps }) {
       <SemanticField mode={mode} step={step} maxSteps={maxSteps} />
 
       <div style={{ marginTop: 12 }}>
+        {!isAI && (
+          <MetricBar
+            label="Co-regulation"
+            value={metrics.coRegulation}
+            color={color}
+          />
+        )}
         <MetricBar
-          label="Co-regulation"
-          value={metrics.coRegulation}
-          color={color}
-        />
-        <MetricBar
-          label="New meaning"
-          value={metrics.newMeaning}
+          label={isAI ? "Mirroring" : "New meaning"}
+          value={isAI ? Math.max(0.3, 0.8 - progress * 0.3) : metrics.newMeaning}
           color={color}
         />
         <MetricBar
@@ -232,8 +234,8 @@ export function VisualMetrics({ mode, step, maxSteps }) {
           color={color}
         />
         <MetricBar
-          label="Metabolization"
-          value={metrics.metabolization}
+          label={isAI ? "Loop closure" : "Metabolization"}
+          value={isAI ? 0.2 + progress * 0.7 : metrics.metabolization}
           color={color}
         />
       </div>
