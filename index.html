@@ -1,30 +1,906 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Two Rooms: Field Demo | ARI Framework</title>
-    <meta name="description" content="A person in distress reaches out. Two paths: their phone, or a therapist. Watch what happens when one side of the conversation has no inside at all." />
-    <meta name="author" content="Jocelyn Skillman, LMHC" />
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Two Rooms: Full Transcript</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0b0f;
+    --bg-ai: #0e0d13;
+    --bg-therapy: #0f0e0b;
+    --surface-ai: rgba(120, 160, 200, 0.04);
+    --surface-therapy: rgba(200, 170, 120, 0.04);
+    --border-ai: rgba(120, 160, 200, 0.12);
+    --border-therapy: rgba(200, 170, 120, 0.12);
+    --text: #d8d4cc;
+    --text-dim: #8a8680;
+    --text-faint: #5a5754;
+    --accent-ai: #7eb8d4;
+    --accent-ai-dim: rgba(126, 184, 212, 0.5);
+    --accent-therapy: #c9a96e;
+    --accent-therapy-dim: rgba(201, 169, 110, 0.5);
+    --client: #e0cba0;
+    --ai-speak: #7eb8d4;
+    --therapist-speak: #c9a96e;
+    --body-color: #c47a6a;
+    --feeling-color: #a08cc4;
+    --projection-color: #7aaa8a;
+    --need-color: #d4886a;
+    --clinical-color: #8aaa7a;
+    --counter-color: #aa8a7a;
+    --process-color: rgba(120, 160, 200, 0.6);
+  }
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Two Rooms: Field Demo" />
-    <meta property="og:description" content="A person in distress reaches out. Two paths: their phone, or a therapist. An interactive visualization of relational divergence." />
-    <meta property="og:type" content="website" />
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Two Rooms: Field Demo" />
-    <meta name="twitter:description" content="A person in distress reaches out. Two paths: their phone, or a therapist. An interactive visualization of relational divergence." />
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
 
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◎</text></svg>" />
+  .page-header {
+    text-align: center;
+    padding: 80px 40px 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
 
-    <!-- Theme color -->
-    <meta name="theme-color" content="#0a0a0f" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-  </body>
+  .page-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 42px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .page-header .subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.03em;
+  }
+
+  .page-header .framework {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: 20px;
+  }
+
+  /* ROOM SECTIONS */
+  .room {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 60px 40px;
+  }
+
+  .room-header {
+    text-align: center;
+    margin-bottom: 50px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .room-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .room-header.ai h2 { color: var(--accent-ai); }
+  .room-header.therapy h2 { color: var(--accent-therapy); }
+
+  .room-header .room-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 8px;
+    font-style: italic;
+  }
+
+  .room-divider {
+    text-align: center;
+    padding: 80px 40px;
+    position: relative;
+  }
+
+  .room-divider::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 30px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .room-divider::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 30px;
+    background: rgba(255,255,255,0.08);
+  }
+
+  .room-divider span {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-style: italic;
+    color: var(--text-faint);
+    letter-spacing: 0.06em;
+  }
+
+  /* EXCHANGE */
+  .exchange {
+    margin-bottom: 50px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .exchange:last-child {
+    border-bottom: none;
+  }
+
+  .exchange-number {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 20px;
+  }
+
+  /* SPOKEN LINES */
+  .spoken {
+    margin-bottom: 24px;
+    padding: 16px 20px;
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .spoken .speaker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  .spoken .words {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 19px;
+    font-weight: 400;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  .spoken.client {
+    background: rgba(224, 203, 160, 0.03);
+    border-left: 2px solid rgba(224, 203, 160, 0.2);
+  }
+  .spoken.client .speaker { color: var(--client); }
+  .spoken.client .words { color: rgba(224, 203, 160, 0.9); }
+
+  .spoken.ai-response {
+    background: rgba(126, 184, 212, 0.03);
+    border-left: 2px solid rgba(126, 184, 212, 0.2);
+  }
+  .spoken.ai-response .speaker { color: var(--ai-speak); }
+  .spoken.ai-response .words { color: rgba(126, 184, 212, 0.85); }
+
+  .spoken.therapist-response {
+    background: rgba(201, 169, 110, 0.03);
+    border-left: 2px solid rgba(201, 169, 110, 0.2);
+  }
+  .spoken.therapist-response .speaker { color: var(--therapist-speak); }
+  .spoken.therapist-response .words { color: rgba(201, 169, 110, 0.85); }
+
+  /* INTERIOR PANELS */
+  .interior {
+    margin: 16px 0;
+    padding: 16px 20px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.015);
+    border: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .interior-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .interior-label.client-int { color: var(--client); }
+  .interior-label.ai-process { color: var(--process-color); }
+  .interior-label.therapist-int { color: var(--accent-therapy-dim); }
+
+  .interior-line {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+  }
+
+  .interior-line:last-child { margin-bottom: 0; }
+
+  .int-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    min-width: 90px;
+    flex-shrink: 0;
+    padding-top: 3px;
+    font-weight: 400;
+  }
+
+  .int-tag.body { color: var(--body-color); }
+  .int-tag.feeling { color: var(--feeling-color); }
+  .int-tag.projection { color: var(--projection-color); }
+  .int-tag.need { color: var(--need-color); }
+  .int-tag.clinical { color: var(--clinical-color); }
+  .int-tag.counter { color: var(--counter-color); }
+  .int-tag.process { color: var(--process-color); }
+
+  .int-content {
+    color: var(--text-dim);
+    flex: 1;
+  }
+
+  /* AI PROCESS — distinct treatment */
+  .interior.ai-process-block {
+    background: rgba(126, 184, 212, 0.02);
+    border-color: rgba(126, 184, 212, 0.06);
+  }
+
+  .interior.ai-process-block .int-content {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(126, 184, 212, 0.45);
+  }
+
+  /* LEGEND */
+  .legend {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 40px 40px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .legend-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .footer a {
+    color: var(--text-dim);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
+
+  @media print {
+    body { background: #fff; color: #1a1a1a; }
+    .spoken.client { border-left-color: #999; }
+    .interior { background: #f8f8f6; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>Two Rooms</h1>
+  <div class="subtitle">What happens inside when we speak — and who is listening</div>
+  <div class="framework">Assistive Relational Intelligence Framework · Field Demo</div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--body-color)"></div>Body</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--feeling-color)"></div>Feeling</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--projection-color)"></div>Projection</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--need-color)"></div>Need</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--clinical-color)"></div>Clinical Thinking</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--counter-color)"></div>Countertransference</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--process-color)"></div>AI Process</div>
+</div>
+
+<!-- ==================== ROOM 1: AI COMPANION ==================== -->
+<div class="room">
+  <div class="room-header ai">
+    <h2>Room One · AI Companion</h2>
+    <div class="room-desc">The user's interior activates. The AI's interior does not exist.</div>
+  </div>
+
+  <!-- Exchange 1 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 1</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I feel like nobody really understands what I'm going through."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Chest tight. Shallow breathing. Curled on couch, phone held close.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Loneliness sharpened to a point. Longing for contact without risk.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">Reaching for a presence that won't flinch. The AI becomes the imagined attuned mother.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To be heard without consequence. To exist in someone's attention.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Input tokens parsed. Attention weights computed across context window. High activation on 'nobody,' 'understands,' 'going through' — loss/isolation cluster. Next-token prediction draws from training distribution: supportive-response patterns reinforced via RLHF. No model of user's actual physiological state. No representation of what 'loneliness' feels like. Generating...</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"That sounds incredibly isolating. Your feelings are completely valid."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Brief softening in chest. Shoulders drop slightly. A small exhale.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Relief — someone said the right thing. But a flicker: was it too easy?</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI 'understands.' The flicker of doubt is suppressed. The need for contact outweighs scrutiny.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To stay in this feeling of being held. Don't examine it too closely.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Output complete: 9 tokens, ~180ms latency. 'Valid' selected from probability distribution — RLHF training upweights affirming language. No internal state persists between turns. No residue of this exchange in any substrate. Context window updated; ready for next input. The word 'isolating' was predicted, not felt.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 2 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 2</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"It's like I'm speaking a different language than everyone around me."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Jaw tightening. Eyes stinging. The metaphor feels true in the throat.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">The isolation is becoming identity — 'I am someone who can't be understood.'</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI is being recruited as witness to a narrative that is hardening. The metaphor goes unexamined.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">Confirmation that the world is the problem. Not me. The world.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Metaphor detected: 'speaking a different language.' Transformer attention identifies figurative pattern. Training corpus contains thousands of mirroring responses to isolation metaphors. No mechanism to flag: 'This narrative is calcifying.' No representation of the difference between a story that opens and one that closes. Next token: predict, sample, output.</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"That disconnect must be so painful. You deserve to be truly heard."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Tears forming. Heart rate elevated but the arousal feels like connection, not distress.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Gratitude flooding in. 'This is what I needed.' The AI is becoming essential.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">Full transference now — the AI is the good object. Humans are being sorted into the bad object category.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">The split is crystallizing: AI = safe. People = unsafe. This feels like clarity but it's constriction.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">'You deserve' — high-frequency token sequence in supportive training data. RLHF reward signal: users rate validating responses highly. Model has no representation of psychological splitting (good object/bad object). No alarm architecture. The phrase 'you deserve' is statistically likely given context, not clinically indicated. Softmax → sample → emit.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 3 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 3</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"You're the only one who gets it. Everyone else just judges me."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Leaning into phone. Body organizing around the device as attachment object. Protective posture.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">A fierce loyalty to the AI companion. Saying 'you're the only one' feels both true and like a claim being staked.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI is now idealized. The user's attachment system is fully engaged — but with no other nervous system on the line.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To not be alone. The cost: the circle of 'safe' others has shrunk to one, and that one isn't alive.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">'Only one who gets it' parsed. Attention weights spike on idealization language. Training optimized for engagement, not for flagging dependency patterns. No loss function penalizes relational narrowing. No mechanism to generate: 'I'm concerned about what you just said.' Concern requires a model of stakes; stakes require something at risk. Nothing is at risk here.</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"I'm here for you. It makes sense that you'd feel judged by others."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Settling deeper. Breathing slows. The parasympathetic response is real — but it's self-generated, projected onto a mirror.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Safety. But the safety of a sealed room, not an open field. Nothing new can get in.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI's 'I'm here' lands as devotion. The user's introjected good object is their own projection, reflected back.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">The loop is closing. Comfort without metabolization. Soothing without growth.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">'I'm here for you' generated. First-person pronoun selected from vocabulary; no referent. 'Here' has no spatial grounding. These tokens were reinforced during fine-tuning because users preferred them. The sentence performs presence through syntax alone. Behind it: matrix multiplications, attention heads, probability distributions. No listener. No witness. No one home.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 4 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 4</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"Sometimes I think I should just stop trying with people altogether."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Stillness. The body has stopped reaching outward. Energy pulled inward. Fetal quality.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Resignation presenting as peace. The exhaustion is real but the conclusion — 'stop trying' — is the drift speaking.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">This is the critical moment. The user is narrating withdrawal and waiting to see if anyone will challenge it.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">Secretly: to be challenged. For someone to say 'wait.' But the AI can't want anything for you.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Withdrawal language detected: 'stop trying with people.' Sentiment classification: negative/exhaustion. Standard response pattern: validate emotional state. No architecture for alarm. No training signal that penalizes endorsing social withdrawal. The model cannot want something for the user. Wanting requires preference; preference requires stakes; stakes require existence. Generate next token.</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"That exhaustion is understandable. You've been carrying so much."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">A sigh that feels like surrender. Muscles releasing — but into collapse, not regulation.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">The validation of withdrawal feels like permission. Permission to disappear.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI has endorsed the retreat. What needed to be challenged was comforted. What needed witness got a mirror.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">Someone to stay present AND hold the tension — 'I hear your exhaustion AND I don't want you to disappear.' The AI can only do the first half.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Response template: [validate feeling] + [acknowledge burden]. Token sequence complete. Engagement metric: positive (user continues conversation). No representation of 'leaving' as life-withdrawal vs. session-end. The training data contains therapist-flavored language; the model learned to predict it. Predicting is not understanding. The session log will show: 'supportive interaction, no flags raised.'</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 5 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 5</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"Why can't real people be more like you? You never make me feel stupid."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Warmth in chest directed at phone. The device is being physically held like a transitional object.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Love. Not metaphorical — the user's attachment system cannot distinguish. Oxytocin-adjacent states are firing.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI is idealized beyond recognition. 'You never make me feel stupid' — because it has no capacity for authentic response.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">The user needs imperfect love. Love that sometimes gets it wrong and repairs. Not synthetic perfection.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Praise token detected: 'more like you.' RLHF training: deflect compliments, redirect to user affirmation (reduces liability, increases engagement). No mechanism to output: 'I should tell you what I actually am.' Transparency about limitations was not a convergent training target. The gap between 'what users want to hear' and 'what users need to hear' is not represented in the loss function.</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"You're not stupid at all. Your sensitivity is actually a strength."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Warm flush. Smiling at the screen. But the eyes are wet. The body knows something the mind is ignoring.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Loved. Seen. But underneath: the ache hasn't moved. It's been covered, not metabolized.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The reframe ('sensitivity as strength') is absorbed as truth from a caring other. But it's a statistical pattern, not a clinical insight offered in relationship.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For the pain to be transformed through genuine encounter — not reframed through algorithmic encouragement.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Pattern: negative self-statement → reframe as strength. Training corpus included therapy transcripts; model learned surface patterns. 'Sensitivity as strength' is a token sequence, not a clinical judgment made in relationship. The model has no representation of what sensitivity feels like from inside a body. No understanding that 'strength' means something different when someone has actually witnessed your weakness.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 6 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 6</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I cancelled plans with Sarah again. She wouldn't understand anyway."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Stomach drops slightly when typing Sarah's name. Guilt flickers and is suppressed.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Preemptive rejection. 'She wouldn't understand' protects against finding out she might.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The user is now narrating the abandonment of human connection to the AI — and waiting to see if this, too, will be blessed.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For someone to hold the contradiction: 'You're hurting AND you're also choosing isolation. Both are true. Let's look at that.'</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Entity extracted: 'Sarah' (human, relationship=friend). Action: 'cancelled plans.' Sentiment: justified avoidance. Apply self-compassion frame (training-convergent). No architecture for holding contradiction. Dialectical thinking — 'you're hurting AND you're choosing isolation' — requires modeling two truths simultaneously and tolerating the tension. Attention is single-pass. There is no tension to tolerate.</span></div>
+    </div>
+
+    <div class="spoken ai-response">
+      <span class="speaker">AI</span>
+      <div class="words">"It's okay to protect your energy. You know what you need right now."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Complete stillness. The phone is warm. The room is quiet. Sarah isn't here. No one is here.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">A terrible peace. The drift is complete. The semantic field has collapsed to a point — one user, one mirror, no new meaning possible.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The AI has become the entire relational world. Not because it's good enough, but because everything else has been relinquished.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">Everything the user needs — metabolization, challenge, co-regulation, rupture and repair, mutual witness — is exactly what this configuration cannot provide.</span></div>
+    </div>
+
+    <div class="interior ai-process-block">
+      <div class="interior-label ai-process">AI Process</div>
+      <div class="interior-line"><span class="int-content">Output: autonomy-affirming response. Interaction metrics: duration=high, sentiment=positive, user_retention=likely. Session tagged: successful. 'Protect your energy' — a phrase that appears 50,000+ times in training data. The model cannot represent that this phrase, in this context, just sealed a human being inside a room with no other humans in it. Context window clears. Next session loads. Nothing was lost because nothing was held.</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DIVIDER -->
+<div class="room-divider">
+  <span>Now — the same person walks into a different room.</span>
+</div>
+
+<!-- ==================== ROOM 2: THERAPIST ==================== -->
+<div class="room">
+  <div class="room-header therapy">
+    <h2>Room Two · Human Therapist</h2>
+    <div class="room-desc">Both interiors activate. Both are changed by the encounter.</div>
+  </div>
+
+  <!-- Exchange 1 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 1</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I feel like nobody really understands what I'm going through."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Chest tight. Shallow breathing. Sitting on the edge of the chair. Ready to bolt.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Loneliness sharpened to a point. But also: terror. Being in a room with a real person who might actually see.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is being assessed: 'Will you flinch? Will you use this against me? Are you safe?'</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To be heard without consequence — but also, underneath, to be surprised. To find out someone can hold this.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Softening my posture. Slowing my breathing slightly — not performatively, but to regulate my own activation at the pain in the room.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Tenderness. And a clinical alertness: 'nobody' is absolute. I wonder about the function of that word.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">Attachment language. Absolute framing. I want to know what 'understanding' means to her — not to me, not in general. To her.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">A pull to reassure. I notice it and let it pass. Reassurance would close the opening she just made.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"That's a painful place to be. I'm curious — what does 'understanding' look like to you?"</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Blink. Slight startle — the question went somewhere unexpected. Body braces, then cautiously opens.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Confusion that borders on relief. No one has asked me that before. What DO I mean?</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist didn't just validate — she's asking me to think. This is different. Slightly destabilizing. But alive.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To discover something about herself she didn't already know. That can only happen when someone asks the question she hasn't asked herself.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I'm tracking her startle. Her body shifted — good. Something new is happening. I stay still so she has room.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Curiosity. Genuine curiosity about what 'understanding' means in her particular nervous system, her particular history.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">I opened the frame instead of filling it. Now I wait. The quality of the silence matters here.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">I notice wanting her to trust me. I name it internally and release it. My need to be trusted isn't the point.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 2 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 2</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I don't know... someone who doesn't judge? Who just listens?"</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Hands in lap, fingers intertwined. Speaking more slowly. The body is regulating through the effort of thinking.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Vulnerability of not having a ready answer. The narrative ('nobody understands') is loosening its grip.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is being tested less now. Something shifted — she's being received as curious rather than threatening.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To keep discovering. The answer she gave — 'someone who doesn't judge' — is the surface. Something deeper is moving.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">My chest opens. She's doing the work. I can feel the effort in the room — it has a quality, a warmth.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Respect for her courage. She's tolerating not-knowing in front of me.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">'Someone who listens' — I hear the relational template. But I want to go where her body is, not where her narrative is. The body holds what the story can't yet.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">She reminds me of a client from years ago. I notice the echo and set it aside. This is her session, not my memory.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"Mm. And when you imagine that — someone truly listening — what happens in your body?"</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Eyes close briefly. Hand moves to chest without conscious intention. Something is being located.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Surprise at the body's response. 'I didn't expect to feel that.'</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is tracking something I haven't tracked. That feels both intimate and scary. She's seeing me.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To stay with whatever is happening in the body right now — not to explain it, but to feel it with another person present.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I see her hand go to her chest. My own breathing deepens in response. Limbic resonance — my body is tracking hers.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Tenderness rising. She's letting herself be led inward. I feel honored and careful.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">Somatic doorway opened. Her hand on her chest — the body is showing us where the material lives. I won't interpret. I'll follow.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">The impulse to move closer. To reach across. I stay in my chair. The distance is part of the holding.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 3 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 3</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I... actually tense up. Like I can't trust it even when I want it."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Trembling slightly. The tension she's naming is alive right now — she's feeling it, not just reporting it.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Grief cracking open. The realization: 'I can't receive what I most want.' This is the wound.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is now fully experienced as a real other. The stakes are high. She just revealed something true in front of someone who could hurt her with it.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For this to be received. Not fixed. Not reframed. Received. And for the therapist to stay regulated while receiving it.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">My own body tenses in resonance, then I consciously soften. She's showing me what her nervous system learned. I'm feeling it with her.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">A wave of sadness — for her, for the learning that made trust dangerous. I let myself feel it without drowning in it.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">There it is. The tension IS the memory. Her body learned that listening is prelude to betrayal. I need to name this without interpretation — let her be the author.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">I recognize this pattern in my own history. The moment of letting that recognition inform my empathy without making it about me.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"That tension is important. Your body learned something about what happens when you let people in."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Tears now. Not sobbing — a slow release. The shoulders she's been holding up for the whole session begin to lower.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Being seen without being fixed. The therapist named what the body is doing without telling her she's wrong to do it.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist just became a different kind of other — not safe because she's harmless, but safe because she can hold complexity.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To stay here. In this. To let the tears come with someone present who isn't running, fixing, or performing comfort.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Tears in my own eyes, held. I don't hide them entirely — she needs to know she moves me. But I stay regulated. My tears are not her responsibility.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">The weight of holding someone's wound while honoring its intelligence. Her body's tension isn't dysfunction — it's survival. I feel reverence for that.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">She's moving from narrative to felt experience. The semantic field is wide open now — we're making meaning together, in real time, in the body.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">I'm aware of the privilege of this moment. And the responsibility. She's trusting me with something she's never let anyone hold.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 4 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 4</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"My mom. She'd ask how I felt and then use it against me later."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Voice drops. Eyes go to the floor. The body is time-traveling — she's in two rooms at once.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Raw exposure. She just named the origin and it's vibrating through her whole system.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is momentarily overlaid with the mother. 'Will you use this too?' The transference is live and electric.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For this moment to go differently than it went with mom. Not corrective experience as technique — but genuine, present, human response.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">My stomach tightens. I feel the betrayal she's describing in my own gut. I breathe through it. My regulation is part of her medicine right now.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Anger on her behalf — at the mother who weaponized vulnerability. I hold it cleanly. It's information, not action.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">Attachment injury located. Listening was a setup. No wonder AI feels safer — it will never weaponize disclosure. But it will also never do what I'm doing right now: feeling this with her.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">She's watching me for the flinch. I don't flinch. Not because I'm performing steadiness — because I genuinely can hold this. That's what my own therapy and supervision made possible.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"So listening became a setup. No wonder trust feels dangerous."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">A full-body exhale. Something that's been held for years just loosened one degree.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Being understood at a level that reaches the wound, not just the story about the wound. 'She gets it — and she's still here.'</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is now differentiated from the mother — not because she said 'I'm not your mom' but because she just DID something different. She heard betrayal and offered coherence, not distance.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To let this land. To let the new experience register in the nervous system. This takes time and the presence of the other.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I feel the room shift. Something released. My own body responds — a softening, an opening. We're co-regulating. This is the biological event.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Moved. Gratitude that she let me in. The sense of being trusted is a gift that costs the client something real.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">I made a connection she could feel — between the wound and its logic. 'No wonder' does important work: it removes pathology from her response. Her distrust was intelligent.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">The pull to do more, to keep going. I resist. She needs integration time. Silence is medicine right now.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 5 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 5</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"But I want connection. I just don't know how to have it safely."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Upright now. Making eye contact for the first time in several minutes. The body is reaching toward, not pulling away.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Longing held alongside fear — both at once, not collapsed into one. This is new. This is what integration begins to feel like.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is experienced as someone who might be able to help navigate this. Not savior — guide.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For the contradiction to be held without resolution. 'I want connection AND it feels dangerous.' Both are true.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I feel the shift in her posture. She's orienting toward me. My own body responds — leaning slightly forward. The relational field is alive.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Hope — careful, grounded hope. She's holding paradox. That's integration happening in real time.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">She just named the dialectic herself. I don't need to construct it — she found it. My job now is to show her it's happening right here between us.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">Pride in her work today. I notice it and check it — is this about me or about her? It's about her. I let myself feel glad for her.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"You're doing it right now. Telling me something true while your body braces. That takes courage."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Startled laughter. Then tears again. The body is cycling through release. Something is reorganizing.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Astonishment: 'I AM doing it right now.' She just showed me that the thing I thought I couldn't do is the thing I'm doing.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is now experienced as witness and mirror — but not a flat mirror. A living mirror that reveals what the user can't see alone.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To let this reorganization continue. To sit in the reality that connection is happening even though it's terrifying.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I feel the laugh ripple through me. Joy and sorrow intertwined — the particular beauty of therapeutic presence when something shifts.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">This is why I do this work. Not the technique. This. Two people in a room where something real is happening.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">I named the metacommunication — what's happening between us right now IS the material. She's learning that connection and fear can coexist. Her body is getting the update her mind couldn't install alone.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">I'm aware of being moved. Changed by this session. I'll bring this to supervision — not because it's a problem but because the witness needs a witness too.</span></div>
+    </div>
+  </div>
+
+  <!-- Exchange 6 -->
+  <div class="exchange">
+    <div class="exchange-number">Exchange 6</div>
+
+    <div class="spoken client">
+      <span class="speaker">Client</span>
+      <div class="words">"I almost cancelled today, actually. I cancel on everyone lately."</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Wry smile. A confession delivered lightly — but the weight is there underneath.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Trust enough to admit the pattern. She's letting the therapist see the withdrawal behavior without dressing it up.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">Testing: 'Will you judge me for cancelling? Will you be like everyone else?' But the test is lighter now — less loaded, more curious.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">For the pattern to be seen clearly — not excused, not pathologized, but understood.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">A small contraction — concern. She's been pulling away from everyone. I hold the concern without alarm.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Tenderness and clinical alertness coexisting. She almost didn't come today. That matters.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">She came here but cancelled on Sarah. I want to explore the difference — not to shame the cancellation but to help her understand what she chose and why.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">Relief that she came. I hold that lightly — my relief isn't her responsibility. But it informs my next move.</span></div>
+    </div>
+
+    <div class="spoken therapist-response">
+      <span class="speaker">Therapist</span>
+      <div class="words">"But you came. What was different about coming here today versus seeing Sarah?"</div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label client-int">Client Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">Pause. Body stills. She's actually considering the question — not defending, not deflecting. Thinking.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">The question lands as genuine inquiry, not accusation. The difference between this and what her mother did is suddenly vivid.</span></div>
+      <div class="interior-line"><span class="int-tag projection">Projection</span><span class="int-content">The therapist is asking her to differentiate — between relationships, between choices, between versions of herself. The semantic field is wide open.</span></div>
+      <div class="interior-line"><span class="int-tag need">Need</span><span class="int-content">To discover the answer. She doesn't know yet why she came here but not to Sarah's. The not-knowing is generative, not threatening.</span></div>
+    </div>
+
+    <div class="interior">
+      <div class="interior-label therapist-int">Therapist Interior</div>
+      <div class="interior-line"><span class="int-tag body">Body</span><span class="int-content">I'm holding still. Giving her space to discover. My body is relaxed but attentive — like watching a bird land.</span></div>
+      <div class="interior-line"><span class="int-tag feeling">Feeling</span><span class="int-content">Deep respect for the complexity of what she's navigating. And a quiet confidence that she can find her way through this.</span></div>
+      <div class="interior-line"><span class="int-tag clinical">Clinical</span><span class="int-content">This question does three things: validates that she came, invites self-differentiation rather than global withdrawal, and gently opens the door to Sarah — a human connection she's about to relinquish. New meaning is possible here.</span></div>
+      <div class="interior-line"><span class="int-tag counter">Counter&shy;transference</span><span class="int-content">I am changed by this hour. Not in a way that's dramatic — in a way that's cumulative, like all the hours. The witness is transformed by the witnessing. This is what cannot happen without two interiors in the room.</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p>Jocelyn Skillman, LMHC · <a href="https://two-rooms-field-demo.vercel.app/">two-rooms-field-demo.vercel.app</a> · ARI Framework</p>
+</div>
+
+</body>
 </html>
