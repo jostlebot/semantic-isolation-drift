@@ -292,7 +292,7 @@ export default function DivergenceView() {
   // Auto-play
   useEffect(() => {
     if (playing) {
-      intervalRef.current = setInterval(advance, 4000);
+      intervalRef.current = setInterval(advance, 8000);
     }
     return () => clearInterval(intervalRef.current);
   }, [playing, advance]);
@@ -657,97 +657,106 @@ export default function DivergenceView() {
         </div>
       </div>
 
-      {/* Controls */}
+      {/* Controls - centered and prominent */}
       <div
         style={{
-          padding: "10px 16px",
+          padding: "16px 20px",
           borderTop: `1px solid ${PALETTE.border}`,
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          gap: 8,
-          flexWrap: "wrap",
+          gap: 12,
         }}
       >
-        <button
-          onClick={goBack}
-          disabled={step <= 0}
-          style={{
-            background: "transparent",
-            border: `1px solid ${PALETTE.border}`,
-            color: step <= 0 ? PALETTE.textMuted : PALETTE.textSecondary,
-            fontFamily: FONTS.mono,
-            fontSize: 10,
-            padding: "6px 12px",
-            borderRadius: 3,
-            cursor: step <= 0 ? "default" : "pointer",
-            opacity: step <= 0 ? 0.5 : 1,
-          }}
-        >
-          ←
-        </button>
-        <button
-          onClick={() => {
-            if (step >= maxStep) {
-              setStep(0);
-              setPlaying(false);
-            } else {
-              setPlaying(!playing);
-            }
-          }}
-          style={{
-            background: "rgba(255,255,255,0.05)",
-            border: `1px solid ${PALETTE.border}`,
-            color: PALETTE.textPrimary,
-            fontFamily: FONTS.mono,
-            fontSize: 10,
-            padding: "6px 16px",
-            borderRadius: 3,
-            cursor: "pointer",
-          }}
-        >
-          {step >= maxStep ? "Reset" : playing ? "Pause" : "Play"}
-        </button>
-        <button
-          onClick={advance}
-          disabled={step >= maxStep}
-          style={{
-            background: "transparent",
-            border: `1px solid ${PALETTE.border}`,
-            color: step >= maxStep ? PALETTE.textMuted : PALETTE.textSecondary,
-            fontFamily: FONTS.mono,
-            fontSize: 10,
-            padding: "6px 12px",
-            borderRadius: 3,
-            cursor: step >= maxStep ? "default" : "pointer",
-            opacity: step >= maxStep ? 0.5 : 1,
-          }}
-        >
-          →
-        </button>
-        <div
-          style={{
-            fontFamily: FONTS.mono,
-            fontSize: 9,
-            color: PALETTE.textMuted,
-            marginLeft: 8,
-          }}
-        >
-          {step + 1} / {maxStep + 1}
+        {/* Main navigation */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <button
+            onClick={goBack}
+            disabled={step <= 0}
+            style={{
+              background: step <= 0 ? "transparent" : "rgba(255,255,255,0.05)",
+              border: `1px solid ${step <= 0 ? PALETTE.border : PALETTE.accent}`,
+              color: step <= 0 ? PALETTE.textMuted : PALETTE.accent,
+              fontFamily: FONTS.mono,
+              fontSize: 14,
+              padding: "10px 20px",
+              borderRadius: 4,
+              cursor: step <= 0 ? "default" : "pointer",
+              opacity: step <= 0 ? 0.4 : 1,
+              transition: "all 0.2s",
+            }}
+          >
+            ← Back
+          </button>
+
+          <div
+            style={{
+              fontFamily: FONTS.mono,
+              fontSize: 12,
+              color: PALETTE.textSecondary,
+              minWidth: 60,
+              textAlign: "center",
+            }}
+          >
+            {step + 1} / {maxStep + 1}
+          </div>
+
+          <button
+            onClick={advance}
+            disabled={step >= maxStep}
+            style={{
+              background: step >= maxStep ? "transparent" : "rgba(212, 136, 106, 0.1)",
+              border: `1px solid ${step >= maxStep ? PALETTE.border : PALETTE.accent}`,
+              color: step >= maxStep ? PALETTE.textMuted : PALETTE.accent,
+              fontFamily: FONTS.mono,
+              fontSize: 14,
+              padding: "10px 20px",
+              borderRadius: 4,
+              cursor: step >= maxStep ? "default" : "pointer",
+              opacity: step >= maxStep ? 0.4 : 1,
+              transition: "all 0.2s",
+            }}
+          >
+            Next →
+          </button>
         </div>
-        <div
-          style={{
-            fontFamily: FONTS.mono,
-            fontSize: 8,
-            color: PALETTE.textMuted,
-            marginLeft: 8,
-            opacity: 0.6,
-          }}
-        >
-          V: toggle view · ← → navigate
+
+        {/* Secondary controls */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <button
+            onClick={() => {
+              if (step >= maxStep) {
+                setStep(0);
+                setPlaying(false);
+              } else {
+                setPlaying(!playing);
+              }
+            }}
+            style={{
+              background: "transparent",
+              border: `1px solid ${PALETTE.border}`,
+              color: PALETTE.textMuted,
+              fontFamily: FONTS.mono,
+              fontSize: 9,
+              padding: "4px 12px",
+              borderRadius: 3,
+              cursor: "pointer",
+            }}
+          >
+            {step >= maxStep ? "Reset" : playing ? "Pause auto" : "Auto-play"}
+          </button>
+          <span
+            style={{
+              fontFamily: FONTS.mono,
+              fontSize: 8,
+              color: PALETTE.textMuted,
+              opacity: 0.6,
+            }}
+          >
+            or use ← → keys
+          </span>
         </div>
       </div>
-
       {/* Footer */}
       <div
         style={{
