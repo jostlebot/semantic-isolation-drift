@@ -190,34 +190,31 @@ function MessageBubble({ text, speaker, entry, side, onClickInterior }) {
         marginBottom: 12,
       }}
     >
-      {/* Clickable label */}
+      {/* Clickable label with door */}
       <button
         onClick={() => hasInterior && onClickInterior()}
         style={{
-          fontSize: 8,
+          fontSize: 9,
           fontFamily: FONTS.mono,
           color: hasInterior ? labelColor : PALETTE.textMuted,
-          marginBottom: 3,
-          letterSpacing: "0.1em",
+          marginBottom: 4,
+          letterSpacing: "0.08em",
           textTransform: "uppercase",
-          background: "transparent",
-          border: "none",
+          background: hasInterior ? `${labelColor}10` : "transparent",
+          border: hasInterior ? `1px solid ${labelColor}30` : "1px solid transparent",
+          borderRadius: 4,
           cursor: hasInterior ? "pointer" : "default",
-          padding: "2px 0",
+          padding: "4px 8px",
           display: "flex",
           alignItems: "center",
-          gap: 4,
+          gap: 6,
+          transition: "all 0.2s",
         }}
       >
-        {isClient ? "client" : isAI ? "AI" : "therapist"}
         {hasInterior && (
-          <span style={{
-            fontSize: 10,
-            opacity: 0.6,
-          }}>
-            ↗
-          </span>
+          <span style={{ fontSize: 12 }}>🚪</span>
         )}
+        {isClient ? "client" : isAI ? "AI" : "therapist"}
       </button>
       <div
         style={{
@@ -627,7 +624,7 @@ export default function DivergenceView() {
           borderBottom: `1px solid ${PALETTE.border}`,
           display: "flex",
           alignItems: "center",
-          justifyContent: "center",
+          justifyContent: "space-between",
         }}
       >
         <div
@@ -638,6 +635,19 @@ export default function DivergenceView() {
           }}
         >
           Two Rooms: <span style={{ color: PALETTE.accent }}>Field Demo</span>
+        </div>
+        <div
+          style={{
+            fontFamily: FONTS.mono,
+            fontSize: 9,
+            color: PALETTE.textMuted,
+            display: "flex",
+            alignItems: "center",
+            gap: 6,
+          }}
+        >
+          <span style={{ fontSize: 12 }}>🚪</span>
+          <span>Click the door to look inside</span>
         </div>
       </div>
 

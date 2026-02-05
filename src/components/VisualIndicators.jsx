@@ -229,13 +229,8 @@ export function VisualMetrics({ mode, step, maxSteps }) {
           color={color}
         />
         <MetricBar
-          label="Semantic field"
-          value={metrics.fieldWidth}
-          color={color}
-        />
-        <MetricBar
-          label={isAI ? "Loop closure" : "Metabolization"}
-          value={isAI ? 0.2 + progress * 0.7 : metrics.metabolization}
+          label="Metabolization"
+          value={isAI ? 0.05 : metrics.metabolization}
           color={color}
         />
       </div>
