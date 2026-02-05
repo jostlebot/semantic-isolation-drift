@@ -343,38 +343,97 @@ export default function DivergenceView() {
             Two Rooms:{" "}
             <span style={{ color: PALETTE.accent }}>Field Demo</span>
           </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          {/* Two rooms visual */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ delay: 0.4 }}
             style={{
-              fontFamily: FONTS.body,
-              fontSize: 15,
-              color: PALETTE.textSecondary,
-              lineHeight: 1.7,
-              margin: "0 0 16px 0",
+              display: "flex",
+              justifyContent: "center",
+              gap: 24,
+              margin: "24px 0",
             }}
           >
-            A person in distress reaches out. Two paths: their phone, or a therapist.
-          </motion.p>
+            <div style={{ textAlign: "center" }}>
+              <div style={{
+                width: 60,
+                height: 50,
+                border: `1px solid ${PALETTE.accentCool}40`,
+                borderRadius: 4,
+                background: PALETTE.void,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 8,
+              }}>
+                <span style={{ fontSize: 20 }}>📱</span>
+              </div>
+              <span style={{
+                fontFamily: FONTS.mono,
+                fontSize: 8,
+                color: PALETTE.accentCool,
+                letterSpacing: "0.1em",
+              }}>
+                ONE PERSON
+              </span>
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <div style={{
+                width: 60,
+                height: 50,
+                border: `1px solid ${PALETTE.nodeTherapist}40`,
+                borderRadius: 4,
+                background: PALETTE.interiorTherapist,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 8,
+              }}>
+                <span style={{ fontSize: 20 }}>👤 👤</span>
+              </div>
+              <span style={{
+                fontFamily: FONTS.mono,
+                fontSize: 8,
+                color: PALETTE.nodeTherapist,
+                letterSpacing: "0.1em",
+              }}>
+                TWO PEOPLE
+              </span>
+            </div>
+          </motion.div>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
             style={{
               fontFamily: FONTS.body,
+              fontSize: 14,
+              color: PALETTE.textSecondary,
+              lineHeight: 1.7,
+              margin: "0 0 12px 0",
+            }}
+          >
+            A person in distress reaches out.
+          </motion.p>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+            style={{
+              fontFamily: FONTS.body,
               fontSize: 13,
               color: PALETTE.textMuted,
               lineHeight: 1.6,
-              margin: "0 0 36px 0",
+              margin: "0 0 32px 0",
             }}
           >
-            Watch what happens when one side of the conversation has no inside at all.
+            Two rooms. One has someone inside. One doesn't.
           </motion.p>
           <motion.button
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6 }}
+            transition={{ delay: 0.7 }}
             onClick={() => setShowIntro(false)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -395,7 +454,7 @@ export default function DivergenceView() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
+            transition={{ delay: 0.9 }}
             style={{
               marginTop: 48,
               fontFamily: FONTS.mono,
