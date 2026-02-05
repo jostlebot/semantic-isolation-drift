@@ -340,8 +340,8 @@ export default function DivergenceView() {
               margin: "0 0 20px 0",
             }}
           >
-            Semantic Isolation{" "}
-            <span style={{ color: PALETTE.accent }}>Drift</span>
+            Two Rooms:{" "}
+            <span style={{ color: PALETTE.accent }}>Field Demo</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -448,7 +448,7 @@ export default function DivergenceView() {
             color: PALETTE.textPrimary,
           }}
         >
-          Semantic Isolation <span style={{ color: PALETTE.accent }}>Drift</span>
+          Two Rooms: <span style={{ color: PALETTE.accent }}>Field Demo</span>
         </div>
 
         {/* View toggle */}
