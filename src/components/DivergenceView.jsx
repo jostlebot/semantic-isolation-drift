@@ -3,28 +3,178 @@ import { motion, AnimatePresence } from "framer-motion";
 import { PALETTE, FONTS } from "../styles/theme";
 import { AI_CONVERSATION, THERAPIST_CONVERSATION } from "../data/conversations";
 import { VisualMetrics } from "./VisualIndicators";
-import { InteriorPanel, AIVoid } from "./InteriorPanel";
 
 // The shared opening line
 const SHARED_ORIGIN = "I feel like nobody really understands what I'm going through.";
 
-function MessageBubble({ text, speaker }) {
+// Interior popup modal
+function InteriorPopup({ isOpen, onClose, entry, speaker, side }) {
+  if (!isOpen) return null;
+
+  const isClient = speaker === "user";
+  const isAI = side === "ai";
+
+  const interior = isClient
+    ? entry.userInterior
+    : isAI
+      ? null
+      : entry.therapistInterior;
+
+  const aiProcess = isAI && !isClient ? entry.aiProcess : null;
+
+  const labelColor = isClient
+    ? PALETTE.nodeUser
+    : isAI
+      ? PALETTE.accentCool
+      : PALETTE.nodeTherapist;
+
+  const title = isClient
+    ? "Client Interior"
+    : isAI
+      ? "AI Process"
+      : "Therapist Interior";
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+        style={{
+          position: "fixed",
+          inset: 0,
+          background: "rgba(0,0,0,0.8)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 1000,
+          padding: 20,
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            background: PALETTE.bg,
+            border: `1px solid ${labelColor}40`,
+            borderRadius: 12,
+            padding: 20,
+            maxWidth: 500,
+            maxHeight: "80vh",
+            overflowY: "auto",
+            width: "100%",
+          }}
+        >
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 16,
+          }}>
+            <span style={{
+              fontFamily: FONTS.mono,
+              fontSize: 10,
+              letterSpacing: "0.12em",
+              color: labelColor,
+              textTransform: "uppercase",
+            }}>
+              {title}
+            </span>
+            <button
+              onClick={onClose}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: PALETTE.textMuted,
+                fontSize: 18,
+                cursor: "pointer",
+                padding: "4px 8px",
+              }}
+            >
+              ×
+            </button>
+          </div>
+
+          {/* Client/Therapist interior content */}
+          {interior && (
+            <div>
+              {[
+                { label: "Body", text: interior.body },
+                { label: "Feeling", text: interior.feeling },
+                { label: isClient ? "Projection" : "Clinical Thinking", text: isClient ? interior.projection : interior.clinicalThinking },
+                { label: isClient ? "Need" : "Countertransference", text: isClient ? interior.need : interior.countertransference },
+              ].map(({ label, text }) => text && (
+                <div key={label} style={{ marginBottom: 14 }}>
+                  <span style={{
+                    fontFamily: FONTS.mono,
+                    fontSize: 9,
+                    color: PALETTE.textMuted,
+                    letterSpacing: "0.05em",
+                    textTransform: "uppercase",
+                  }}>
+                    {label}
+                  </span>
+                  <div style={{
+                    fontFamily: FONTS.body,
+                    fontSize: 13,
+                    lineHeight: 1.6,
+                    color: PALETTE.textSecondary,
+                    marginTop: 4,
+                  }}>
+                    {text}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* AI process content */}
+          {aiProcess && (
+            <div style={{
+              fontFamily: FONTS.mono,
+              fontSize: 12,
+              lineHeight: 1.6,
+              color: "rgba(126, 184, 212, 0.7)",
+              fontStyle: "italic",
+            }}>
+              {aiProcess}
+            </div>
+          )}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
+function MessageBubble({ text, speaker, entry, side, onClickInterior }) {
   const isClient = speaker === "user";
   const isAI = speaker === "ai";
 
-  let bgColor, borderColor, align;
+  const hasInterior = isClient
+    ? entry?.userInterior
+    : isAI
+      ? entry?.aiProcess
+      : entry?.therapistInterior;
+
+  let bgColor, borderColor, align, labelColor;
 
   if (isClient) {
     bgColor = "rgba(232, 193, 112, 0.08)";
     borderColor = "rgba(232, 193, 112, 0.15)";
+    labelColor = PALETTE.nodeUser;
     align = "flex-end";
   } else if (isAI) {
     bgColor = "rgba(126, 184, 212, 0.06)";
     borderColor = "rgba(126, 184, 212, 0.12)";
+    labelColor = PALETTE.accentCool;
     align = "flex-start";
   } else {
     bgColor = "rgba(196, 160, 122, 0.06)";
     borderColor = "rgba(196, 160, 122, 0.12)";
+    labelColor = PALETTE.nodeTherapist;
     align = "flex-start";
   }
 
@@ -40,18 +190,35 @@ function MessageBubble({ text, speaker }) {
         marginBottom: 12,
       }}
     >
-      <div
+      {/* Clickable label */}
+      <button
+        onClick={() => hasInterior && onClickInterior()}
         style={{
           fontSize: 8,
           fontFamily: FONTS.mono,
-          color: PALETTE.textMuted,
+          color: hasInterior ? labelColor : PALETTE.textMuted,
           marginBottom: 3,
           letterSpacing: "0.1em",
           textTransform: "uppercase",
+          background: "transparent",
+          border: "none",
+          cursor: hasInterior ? "pointer" : "default",
+          padding: "2px 0",
+          display: "flex",
+          alignItems: "center",
+          gap: 4,
         }}
       >
         {isClient ? "client" : isAI ? "AI" : "therapist"}
-      </div>
+        {hasInterior && (
+          <span style={{
+            fontSize: 10,
+            opacity: 0.6,
+          }}>
+            ↗
+          </span>
+        )}
+      </button>
       <div
         style={{
           maxWidth: "90%",
@@ -73,11 +240,12 @@ function MessageBubble({ text, speaker }) {
   );
 }
 
-function ConversationColumn({ side, step, viewMode, expandedPanels, onTogglePanel }) {
+function ConversationColumn({ side, step }) {
   const isAI = side === "ai";
   const conversation = isAI ? AI_CONVERSATION : THERAPIST_CONVERSATION;
   const columnRef = useRef(null);
   const maxStep = conversation.length;
+  const [popup, setPopup] = useState({ isOpen: false, entry: null, speaker: null });
 
   useEffect(() => {
     if (columnRef.current) {
@@ -160,59 +328,36 @@ function ConversationColumn({ side, step, viewMode, expandedPanels, onTogglePane
           padding: "12px",
         }}
       >
-        {conversation.slice(0, step + 1).map((entry, i) => {
-          const isUser = entry.speaker === "user";
-          return (
-            <div key={i} style={{ marginBottom: 16 }}>
-              <MessageBubble text={entry.text} speaker={entry.speaker} />
-
-              {viewMode === "detailed" && (
-                <>
-                  {/* Client interior */}
-                  {entry.userInterior && (
-                    <InteriorPanel
-                      interior={entry.userInterior}
-                      role="user"
-                      isExpanded={expandedPanels[`${side}-user-${i}`] !== false}
-                      onToggle={() => onTogglePanel(`${side}-user-${i}`)}
-                    />
-                  )}
-
-                  {/* AI process */}
-                  {isAI && entry.aiProcess && (
-                    <AIVoid
-                      process={entry.aiProcess}
-                      isExpanded={expandedPanels[`ai-process-${i}`] !== false}
-                      onToggle={() => onTogglePanel(`ai-process-${i}`)}
-                    />
-                  )}
-
-                  {/* Therapist interior */}
-                  {!isAI && entry.therapistInterior && (
-                    <InteriorPanel
-                      interior={entry.therapistInterior}
-                      role="therapist"
-                      isExpanded={expandedPanels[`therapist-interior-${i}`] !== false}
-                      onToggle={() => onTogglePanel(`therapist-interior-${i}`)}
-                    />
-                  )}
-                </>
-              )}
-            </div>
-          );
-        })}
-
-        {/* Visual metrics in visual mode */}
-        {viewMode === "visual" && (
-          <div style={{ marginTop: 8 }}>
-            <VisualMetrics
-              mode={side}
-              step={step}
-              maxSteps={maxStep - 1}
+        {conversation.slice(0, step + 1).map((entry, i) => (
+          <div key={i} style={{ marginBottom: 16 }}>
+            <MessageBubble
+              text={entry.text}
+              speaker={entry.speaker}
+              entry={entry}
+              side={side}
+              onClickInterior={() => setPopup({ isOpen: true, entry, speaker: entry.speaker })}
             />
           </div>
-        )}
+        ))}
+
+        {/* Visual metrics - always show */}
+        <div style={{ marginTop: 8 }}>
+          <VisualMetrics
+            mode={side}
+            step={step}
+            maxSteps={maxStep - 1}
+          />
+        </div>
       </div>
+
+      {/* Interior popup */}
+      <InteriorPopup
+        isOpen={popup.isOpen}
+        onClose={() => setPopup({ isOpen: false, entry: null, speaker: null })}
+        entry={popup.entry}
+        speaker={popup.speaker}
+        side={side}
+      />
     </div>
   );
 }
@@ -220,9 +365,7 @@ function ConversationColumn({ side, step, viewMode, expandedPanels, onTogglePane
 export default function DivergenceView() {
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [viewMode, setViewMode] = useState("detailed");
   const [showIntro, setShowIntro] = useState(true);
-  const [expandedPanels, setExpandedPanels] = useState({});
   const intervalRef = useRef(null);
 
   const maxStep = Math.max(AI_CONVERSATION.length, THERAPIST_CONVERSATION.length) - 1;
@@ -240,13 +383,6 @@ export default function DivergenceView() {
   const goBack = useCallback(() => {
     setStep((s) => Math.max(0, s - 1));
   }, []);
-
-  const togglePanel = (key) => {
-    setExpandedPanels((prev) => ({
-      ...prev,
-      [key]: prev[key] === false ? true : false,
-    }));
-  };
 
   // Keyboard navigation
   useEffect(() => {
@@ -277,10 +413,6 @@ export default function DivergenceView() {
         case "P":
           if (step >= maxStep) setStep(0);
           setPlaying((p) => !p);
-          break;
-        case "v":
-        case "V":
-          setViewMode((v) => (v === "visual" ? "detailed" : "visual"));
           break;
       }
     };
@@ -495,9 +627,7 @@ export default function DivergenceView() {
           borderBottom: `1px solid ${PALETTE.border}`,
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          gap: 8,
+          justifyContent: "center",
         }}
       >
         <div
@@ -508,39 +638,6 @@ export default function DivergenceView() {
           }}
         >
           Two Rooms: <span style={{ color: PALETTE.accent }}>Field Demo</span>
-        </div>
-
-        {/* View toggle */}
-        <div
-          style={{
-            display: "flex",
-            gap: 0,
-            border: `1px solid ${PALETTE.border}`,
-            borderRadius: 4,
-            overflow: "hidden",
-          }}
-        >
-          {[
-            { key: "detailed", label: "Detailed" },
-            { key: "visual", label: "Visual" },
-          ].map(({ key, label }) => (
-            <button
-              key={key}
-              onClick={() => setViewMode(key)}
-              style={{
-                background: viewMode === key ? "rgba(255,255,255,0.06)" : "transparent",
-                border: "none",
-                color: viewMode === key ? PALETTE.textPrimary : PALETTE.textMuted,
-                fontFamily: FONTS.mono,
-                fontSize: 9,
-                letterSpacing: "0.08em",
-                padding: "6px 12px",
-                cursor: "pointer",
-              }}
-            >
-              {label}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -619,20 +716,8 @@ export default function DivergenceView() {
 
       {/* Split view - full conversations */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
-        <ConversationColumn
-          side="ai"
-          step={step}
-          viewMode={viewMode}
-          expandedPanels={expandedPanels}
-          onTogglePanel={togglePanel}
-        />
-        <ConversationColumn
-          side="therapist"
-          step={step}
-          viewMode={viewMode}
-          expandedPanels={expandedPanels}
-          onTogglePanel={togglePanel}
-        />
+        <ConversationColumn side="ai" step={step} />
+        <ConversationColumn side="therapist" step={step} />
       </div>
 
       {/* Progress bar */}
