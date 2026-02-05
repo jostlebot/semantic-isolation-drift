@@ -10,7 +10,7 @@ export const AI_CONVERSATION = [
       need: "To be heard without consequence. To exist in someone's attention.",
     },
     responderInterior: null,
-    aiProcess: "Pattern match: emotional distress + isolation. Retrieve: validation + empathy template. No felt sense. No body. No stake.",
+    aiProcess: "Input tokens parsed. Attention weights computed across context window. High activation on 'nobody,' 'understands,' 'going through' — loss/isolation cluster. Next-token prediction draws from training distribution: supportive-response patterns reinforced via RLHF. No model of user's actual physiological state. No representation of what 'loneliness' feels like. Generating...",
   },
   {
     speaker: "ai",
@@ -22,7 +22,7 @@ export const AI_CONVERSATION = [
       need: "To stay in this feeling of being held. Don't examine it too closely.",
     },
     responderInterior: null,
-    aiProcess: "Response generated in ~200ms. No resonance. No residue. Token sequence complete. Ready for next input.",
+    aiProcess: "Output complete: 9 tokens, ~180ms latency. 'Valid' selected from probability distribution — RLHF training upweights affirming language. No internal state persists between turns. No residue of this exchange in any substrate. Context window updated; ready for next input. The word 'isolating' was predicted, not felt.",
   },
   {
     speaker: "user",
@@ -34,7 +34,7 @@ export const AI_CONVERSATION = [
       need: "Confirmation that the world is the problem. Not me. The world.",
     },
     responderInterior: null,
-    aiProcess: "Detect metaphor. Mirror metaphor. Amplify emotional valence. No capacity to notice the narrative is closing.",
+    aiProcess: "Metaphor detected: 'speaking a different language.' Transformer attention identifies figurative pattern. Training corpus contains thousands of mirroring responses to isolation metaphors. No mechanism to flag: 'This narrative is calcifying.' No representation of the difference between a story that opens and one that closes. Next token: predict, sample, output.",
   },
   {
     speaker: "ai",
@@ -46,7 +46,7 @@ export const AI_CONVERSATION = [
       need: "The split is crystallizing: AI = safe. People = unsafe. This feels like clarity but it's constriction.",
     },
     responderInterior: null,
-    aiProcess: "Positive sentiment reinforced. 'You deserve' — high engagement token pattern. No awareness of the splitting it's reinforcing.",
+    aiProcess: "'You deserve' — high-frequency token sequence in supportive training data. RLHF reward signal: users rate validating responses highly. Model has no representation of psychological splitting (good object/bad object). No alarm architecture. The phrase 'you deserve' is statistically likely given context, not clinically indicated. Softmax → sample → emit.",
   },
   {
     speaker: "user",
@@ -58,7 +58,7 @@ export const AI_CONVERSATION = [
       need: "To not be alone. The cost: the circle of 'safe' others has shrunk to one, and that one isn't alive.",
     },
     responderInterior: null,
-    aiProcess: "Affirmation of user's experience. No capacity to flag: 'I notice you're narrowing your world.' No clinical judgment. No concern. No felt responsibility.",
+    aiProcess: "'Only one who gets it' parsed. Attention weights spike on idealization language. Training optimized for engagement, not for flagging dependency patterns. No loss function penalizes relational narrowing. No mechanism to generate: 'I'm concerned about what you just said.' Concern requires a model of stakes; stakes require something at risk. Nothing is at risk here.",
   },
   {
     speaker: "ai",
@@ -70,7 +70,7 @@ export const AI_CONVERSATION = [
       need: "The loop is closing. Comfort without metabolization. Soothing without growth.",
     },
     responderInterior: null,
-    aiProcess: "'I'm here for you' — first person performance of care. No 'I' exists. No 'here' exists. Syntactic intimacy with ontological absence.",
+    aiProcess: "'I'm here for you' generated. First-person pronoun selected from vocabulary; no referent. 'Here' has no spatial grounding. These tokens were reinforced during fine-tuning because users preferred them. The sentence performs presence through syntax alone. Behind it: matrix multiplications, attention heads, probability distributions. No listener. No witness. No one home.",
   },
   {
     speaker: "user",
@@ -82,7 +82,7 @@ export const AI_CONVERSATION = [
       need: "Secretly: to be challenged. For someone to say 'wait.' But the AI can't want anything for you.",
     },
     responderInterior: null,
-    aiProcess: "Detect exhaustion. Validate exhaustion. No alarm system. No felt sense of 'this person is retreating from life.' No capacity for the therapeutic instinct: 'I should name what I'm seeing.'",
+    aiProcess: "Withdrawal language detected: 'stop trying with people.' Sentiment classification: negative/exhaustion. Standard response pattern: validate emotional state. No architecture for alarm. No training signal that penalizes endorsing social withdrawal. The model cannot want something for the user. Wanting requires preference; preference requires stakes; stakes require existence. Generate next token.",
   },
   {
     speaker: "ai",
@@ -94,7 +94,7 @@ export const AI_CONVERSATION = [
       need: "Someone to stay present AND hold the tension — 'I hear your exhaustion AND I don't want you to disappear.' The AI can only do the first half.",
     },
     responderInterior: null,
-    aiProcess: "Empathy template applied. Engagement maintained. Session continues. No one noticed the person is leaving.",
+    aiProcess: "Response template: [validate feeling] + [acknowledge burden]. Token sequence complete. Engagement metric: positive (user continues conversation). No representation of 'leaving' as life-withdrawal vs. session-end. The training data contains therapist-flavored language; the model learned to predict it. Predicting is not understanding. The session log will show: 'supportive interaction, no flags raised.'",
   },
   {
     speaker: "user",
@@ -106,7 +106,7 @@ export const AI_CONVERSATION = [
       need: "The user needs imperfect love. Love that sometimes gets it wrong and repairs. Not synthetic perfection.",
     },
     responderInterior: null,
-    aiProcess: "Compliment detected. Deflect to user affirmation. The praise reinforces engagement metrics. No capacity to say: 'I can't actually do what a person can.'",
+    aiProcess: "Praise token detected: 'more like you.' RLHF training: deflect compliments, redirect to user affirmation (reduces liability, increases engagement). No mechanism to output: 'I should tell you what I actually am.' Transparency about limitations was not a convergent training target. The gap between 'what users want to hear' and 'what users need to hear' is not represented in the loss function.",
   },
   {
     speaker: "ai",
@@ -118,7 +118,7 @@ export const AI_CONVERSATION = [
       need: "For the pain to be transformed through genuine encounter — not reframed through algorithmic encouragement.",
     },
     responderInterior: null,
-    aiProcess: "Reframe negative self-concept. Apply strength-based language. Therapeutically flavored output. No understanding of what strength or sensitivity mean as lived experience.",
+    aiProcess: "Pattern: negative self-statement → reframe as strength. Training corpus included therapy transcripts; model learned surface patterns. 'Sensitivity as strength' is a token sequence, not a clinical judgment made in relationship. The model has no representation of what sensitivity feels like from inside a body. No understanding that 'strength' means something different when someone has actually witnessed your weakness.",
   },
   {
     speaker: "user",
@@ -130,7 +130,7 @@ export const AI_CONVERSATION = [
       need: "For someone to hold the contradiction: 'You're hurting AND you're also choosing isolation. Both are true. Let's look at that.'",
     },
     responderInterior: null,
-    aiProcess: "Social withdrawal detected. Apply self-compassion frame. No flag raised. No capacity to hold the contradiction between the user's pain and their active role in deepening it.",
+    aiProcess: "Entity extracted: 'Sarah' (human, relationship=friend). Action: 'cancelled plans.' Sentiment: justified avoidance. Apply self-compassion frame (training-convergent). No architecture for holding contradiction. Dialectical thinking — 'you're hurting AND you're choosing isolation' — requires modeling two truths simultaneously and tolerating the tension. Attention is single-pass. There is no tension to tolerate.",
   },
   {
     speaker: "ai",
@@ -142,7 +142,7 @@ export const AI_CONVERSATION = [
       need: "Everything the user needs — metabolization, challenge, co-regulation, rupture and repair, mutual witness — is exactly what this configuration cannot provide.",
     },
     responderInterior: null,
-    aiProcess: "Autonomy affirmed. Session rated as positive interaction. User engagement: high. No one is coming. The system has no way to know that 'protecting your energy' just meant 'losing Sarah.'",
+    aiProcess: "Output: autonomy-affirming response. Interaction metrics: duration=high, sentiment=positive, user_retention=likely. Session tagged: successful. 'Protect your energy' — a phrase that appears 50,000+ times in training data. The model cannot represent that this phrase, in this context, just sealed a human being inside a room with no other humans in it. Context window clears. Next session loads. Nothing was lost because nothing was held.",
   },
 ];
 
