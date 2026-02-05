@@ -1,0 +1,31 @@
+export const PALETTE = {
+  bg: "#0a0a0f",
+  bgSubtle: "#12121a",
+  bgCard: "rgba(255,255,255,0.02)",
+  nodeUser: "#e8c170",
+  nodeAI: "#7eb8d4",
+  nodeTherapist: "#c4a07a",
+  textPrimary: "#e0ddd5",
+  textSecondary: "#8a8780",
+  textMuted: "#5a5854",
+  accent: "#d4886a",
+  accentCool: "#7eb8d4",
+  warning: "#c45c5c",
+  safe: "#7aaa8a",
+  border: "rgba(255,255,255,0.06)",
+  borderHover: "rgba(255,255,255,0.12)",
+  interiorUser: "rgba(232, 193, 112, 0.06)",
+  interiorUserBorder: "rgba(232, 193, 112, 0.12)",
+  interiorAI: "rgba(126, 184, 212, 0.04)",
+  interiorAIBorder: "rgba(126, 184, 212, 0.08)",
+  interiorTherapist: "rgba(196, 160, 122, 0.06)",
+  interiorTherapistBorder: "rgba(196, 160, 122, 0.12)",
+  void: "rgba(126, 184, 212, 0.05)",
+  voidBorder: "rgba(126, 184, 212, 0.12)",
+};
+
+export const FONTS = {
+  display: "'Playfair Display', Georgia, serif",
+  body: "'Source Sans 3', 'Source Sans Pro', system-ui, sans-serif",
+  mono: "'IBM Plex Mono', 'Courier New', monospace",
+};
