@@ -5,31 +5,10 @@ import { AI_CONVERSATION, THERAPIST_CONVERSATION } from "../data/conversations";
 import { VisualMetrics } from "./VisualIndicators";
 import { InteriorPanel, AIVoid } from "./InteriorPanel";
 
-// Pair up the conversations by client message
-function getPairedExchanges() {
-  const pairs = [];
-  const maxLen = Math.max(AI_CONVERSATION.length, THERAPIST_CONVERSATION.length);
+// The shared opening line
+const SHARED_ORIGIN = "I feel like nobody really understands what I'm going through.";
 
-  for (let i = 0; i < maxLen; i += 2) {
-    const clientMsg = AI_CONVERSATION[i]; // Client message (same in both)
-    const aiResponse = AI_CONVERSATION[i + 1];
-    const therapistResponse = THERAPIST_CONVERSATION[i + 1];
-
-    pairs.push({
-      client: clientMsg,
-      ai: aiResponse,
-      therapist: therapistResponse,
-      therapistClientInterior: THERAPIST_CONVERSATION[i]?.userInterior,
-      therapistInteriorOnClient: THERAPIST_CONVERSATION[i]?.therapistInterior,
-    });
-  }
-
-  return pairs;
-}
-
-const PAIRED_EXCHANGES = getPairedExchanges();
-
-function MessageBubble({ text, speaker, side }) {
+function MessageBubble({ text, speaker }) {
   const isClient = speaker === "user";
   const isAI = speaker === "ai";
 
@@ -58,7 +37,7 @@ function MessageBubble({ text, speaker, side }) {
         display: "flex",
         flexDirection: "column",
         alignItems: align,
-        marginBottom: 8,
+        marginBottom: 12,
       }}
     >
       <div
@@ -75,11 +54,11 @@ function MessageBubble({ text, speaker, side }) {
       </div>
       <div
         style={{
-          maxWidth: "95%",
-          padding: "8px 12px",
+          maxWidth: "90%",
+          padding: "10px 14px",
           borderRadius: isClient
-            ? "12px 12px 4px 12px"
-            : "12px 12px 12px 4px",
+            ? "14px 14px 4px 14px"
+            : "14px 14px 14px 4px",
           background: bgColor,
           border: `1px solid ${borderColor}`,
           fontFamily: FONTS.body,
@@ -94,9 +73,11 @@ function MessageBubble({ text, speaker, side }) {
   );
 }
 
-function ConversationColumn({ side, exchanges, step, viewMode, expandedPanels, onTogglePanel }) {
+function ConversationColumn({ side, step, viewMode, expandedPanels, onTogglePanel }) {
   const isAI = side === "ai";
+  const conversation = isAI ? AI_CONVERSATION : THERAPIST_CONVERSATION;
   const columnRef = useRef(null);
+  const maxStep = conversation.length;
 
   useEffect(() => {
     if (columnRef.current) {
@@ -146,7 +127,7 @@ function ConversationColumn({ side, exchanges, step, viewMode, expandedPanels, o
             textTransform: "uppercase",
           }}
         >
-          {isAI ? "AI Companion" : "Human Therapist"}
+          {isAI ? "→ Phone (AI Companion)" : "→ Therapist (Human)"}
         </span>
       </div>
 
@@ -179,61 +160,47 @@ function ConversationColumn({ side, exchanges, step, viewMode, expandedPanels, o
           padding: "12px",
         }}
       >
-        {exchanges.slice(0, step + 1).map((exchange, i) => (
-          <div key={i} style={{ marginBottom: 16 }}>
-            {/* Response */}
-            {isAI && exchange.ai && (
-              <>
-                <MessageBubble
-                  text={exchange.ai.text}
-                  speaker="ai"
-                  side={side}
-                />
-                {viewMode === "detailed" && exchange.ai.aiProcess && (
-                  <AIVoid
-                    process={exchange.ai.aiProcess}
-                    isExpanded={expandedPanels[`ai-${i}`] !== false}
-                    onToggle={() => onTogglePanel(`ai-${i}`)}
-                  />
-                )}
-                {viewMode === "detailed" && exchange.ai.userInterior && (
-                  <InteriorPanel
-                    interior={exchange.ai.userInterior}
-                    role="user"
-                    isExpanded={expandedPanels[`ai-user-${i}`] !== false}
-                    onToggle={() => onTogglePanel(`ai-user-${i}`)}
-                  />
-                )}
-              </>
-            )}
+        {conversation.slice(0, step + 1).map((entry, i) => {
+          const isUser = entry.speaker === "user";
+          return (
+            <div key={i} style={{ marginBottom: 16 }}>
+              <MessageBubble text={entry.text} speaker={entry.speaker} />
 
-            {!isAI && exchange.therapist && (
-              <>
-                <MessageBubble
-                  text={exchange.therapist.text}
-                  speaker="therapist"
-                  side={side}
-                />
-                {viewMode === "detailed" && exchange.therapist.therapistInterior && (
-                  <InteriorPanel
-                    interior={exchange.therapist.therapistInterior}
-                    role="therapist"
-                    isExpanded={expandedPanels[`therapist-${i}`] !== false}
-                    onToggle={() => onTogglePanel(`therapist-${i}`)}
-                  />
-                )}
-                {viewMode === "detailed" && exchange.therapist.userInterior && (
-                  <InteriorPanel
-                    interior={exchange.therapist.userInterior}
-                    role="user"
-                    isExpanded={expandedPanels[`therapist-user-${i}`] !== false}
-                    onToggle={() => onTogglePanel(`therapist-user-${i}`)}
-                  />
-                )}
-              </>
-            )}
-          </div>
-        ))}
+              {viewMode === "detailed" && (
+                <>
+                  {/* Client interior */}
+                  {entry.userInterior && (
+                    <InteriorPanel
+                      interior={entry.userInterior}
+                      role="user"
+                      isExpanded={expandedPanels[`${side}-user-${i}`] !== false}
+                      onToggle={() => onTogglePanel(`${side}-user-${i}`)}
+                    />
+                  )}
+
+                  {/* AI process */}
+                  {isAI && entry.aiProcess && (
+                    <AIVoid
+                      process={entry.aiProcess}
+                      isExpanded={expandedPanels[`ai-process-${i}`] !== false}
+                      onToggle={() => onTogglePanel(`ai-process-${i}`)}
+                    />
+                  )}
+
+                  {/* Therapist interior */}
+                  {!isAI && entry.therapistInterior && (
+                    <InteriorPanel
+                      interior={entry.therapistInterior}
+                      role="therapist"
+                      isExpanded={expandedPanels[`therapist-interior-${i}`] !== false}
+                      onToggle={() => onTogglePanel(`therapist-interior-${i}`)}
+                    />
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
 
         {/* Visual metrics in visual mode */}
         {viewMode === "visual" && (
@@ -241,7 +208,7 @@ function ConversationColumn({ side, exchanges, step, viewMode, expandedPanels, o
             <VisualMetrics
               mode={side}
               step={step}
-              maxSteps={exchanges.length - 1}
+              maxSteps={maxStep - 1}
             />
           </div>
         )}
@@ -253,12 +220,12 @@ function ConversationColumn({ side, exchanges, step, viewMode, expandedPanels, o
 export default function DivergenceView() {
   const [step, setStep] = useState(0);
   const [playing, setPlaying] = useState(false);
-  const [viewMode, setViewMode] = useState("visual"); // 'visual' or 'detailed'
+  const [viewMode, setViewMode] = useState("visual");
   const [showIntro, setShowIntro] = useState(true);
   const [expandedPanels, setExpandedPanels] = useState({});
   const intervalRef = useRef(null);
 
-  const maxStep = PAIRED_EXCHANGES.length - 1;
+  const maxStep = Math.max(AI_CONVERSATION.length, THERAPIST_CONVERSATION.length) - 1;
 
   const advance = useCallback(() => {
     setStep((s) => {
@@ -325,12 +292,10 @@ export default function DivergenceView() {
   // Auto-play
   useEffect(() => {
     if (playing) {
-      intervalRef.current = setInterval(advance, 6000);
+      intervalRef.current = setInterval(advance, 4000);
     }
     return () => clearInterval(intervalRef.current);
   }, [playing, advance]);
-
-  const currentExchange = PAIRED_EXCHANGES[step];
 
   if (showIntro) {
     return (
@@ -390,7 +355,7 @@ export default function DivergenceView() {
               margin: "0 0 16px 0",
             }}
           >
-            The same client. The same opening words. Two different relational contexts.
+            A person in distress reaches out. Two paths: their phone, or a therapist.
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -520,75 +485,83 @@ export default function DivergenceView() {
         </div>
       </div>
 
-      {/* Shared client message - THE ORIGIN POINT */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-          style={{
-            padding: "16px 20px",
-            borderBottom: `1px solid ${PALETTE.border}`,
-            background: "rgba(232, 193, 112, 0.03)",
-          }}
-        >
+      {/* Shared origin - shown once at top */}
+      <div
+        style={{
+          padding: "14px 20px",
+          borderBottom: `1px solid ${PALETTE.border}`,
+          background: "rgba(232, 193, 112, 0.03)",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 10 }}>
           <div
+            style={{
+              width: 10,
+              height: 10,
+              borderRadius: "50%",
+              background: PALETTE.nodeUser,
+              boxShadow: `0 0 8px ${PALETTE.nodeUser}50`,
+            }}
+          />
+          <span
             style={{
               fontFamily: FONTS.mono,
-              fontSize: 9,
-              letterSpacing: "0.15em",
+              fontSize: 10,
+              letterSpacing: "0.12em",
               color: PALETTE.nodeUser,
               textTransform: "uppercase",
-              marginBottom: 8,
-              textAlign: "center",
             }}
           >
-            Client says:
-          </div>
-          <div
-            style={{
-              fontFamily: FONTS.body,
-              fontSize: 15,
-              lineHeight: 1.5,
-              color: PALETTE.textPrimary,
-              textAlign: "center",
-              maxWidth: 600,
-              margin: "0 auto",
-              padding: "12px 20px",
-              background: "rgba(232, 193, 112, 0.06)",
-              border: `1px solid rgba(232, 193, 112, 0.15)`,
-              borderRadius: 8,
-            }}
-          >
-            "{currentExchange?.client?.text}"
-          </div>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: 12,
-            }}
-          >
-            <svg width="40" height="24" viewBox="0 0 40 24">
-              <path
-                d="M20 0 L20 8 L8 8 L8 24 M20 8 L32 8 L32 24"
-                fill="none"
-                stroke={PALETTE.border}
-                strokeWidth="1"
-              />
-              <circle cx="8" cy="24" r="3" fill={PALETTE.accentCool} opacity="0.5" />
-              <circle cx="32" cy="24" r="3" fill={PALETTE.nodeTherapist} opacity="0.5" />
-            </svg>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+            Human in distress
+          </span>
+        </div>
+        <div
+          style={{
+            fontFamily: FONTS.body,
+            fontSize: 14,
+            fontStyle: "italic",
+            lineHeight: 1.5,
+            color: PALETTE.textSecondary,
+            textAlign: "center",
+            maxWidth: 500,
+            margin: "0 auto 12px",
+          }}
+        >
+          "{SHARED_ORIGIN}"
+        </div>
+        {/* Divergence visual */}
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <svg width="200" height="32" viewBox="0 0 200 32">
+            {/* Center point */}
+            <circle cx="100" cy="4" r="3" fill={PALETTE.nodeUser} />
+            {/* Left branch to phone */}
+            <path
+              d="M100 7 L100 12 L50 12 L50 28"
+              fill="none"
+              stroke={PALETTE.accentCool}
+              strokeWidth="1"
+              opacity="0.5"
+            />
+            <circle cx="50" cy="30" r="4" fill={PALETTE.accentCool} opacity="0.6" />
+            <text x="50" y="28" textAnchor="middle" fill={PALETTE.accentCool} fontSize="8" fontFamily={FONTS.mono} opacity="0.8">📱</text>
+            {/* Right branch to therapist */}
+            <path
+              d="M100 7 L100 12 L150 12 L150 28"
+              fill="none"
+              stroke={PALETTE.nodeTherapist}
+              strokeWidth="1"
+              opacity="0.5"
+            />
+            <circle cx="150" cy="30" r="4" fill={PALETTE.nodeTherapist} opacity="0.6" />
+            <text x="150" y="28" textAnchor="middle" fill={PALETTE.nodeTherapist} fontSize="8" fontFamily={FONTS.mono} opacity="0.8">👤</text>
+          </svg>
+        </div>
+      </div>
 
-      {/* Split view - AI left, Therapist right */}
+      {/* Split view - full conversations */}
       <div style={{ flex: 1, display: "flex", overflow: "hidden" }}>
         <ConversationColumn
           side="ai"
-          exchanges={PAIRED_EXCHANGES}
           step={step}
           viewMode={viewMode}
           expandedPanels={expandedPanels}
@@ -596,7 +569,6 @@ export default function DivergenceView() {
         />
         <ConversationColumn
           side="therapist"
-          exchanges={PAIRED_EXCHANGES}
           step={step}
           viewMode={viewMode}
           expandedPanels={expandedPanels}
@@ -607,7 +579,7 @@ export default function DivergenceView() {
       {/* Progress bar */}
       <div style={{ padding: "8px 16px", borderTop: `1px solid ${PALETTE.border}` }}>
         <div style={{ display: "flex", gap: 3 }}>
-          {PAIRED_EXCHANGES.map((_, i) => (
+          {Array.from({ length: maxStep + 1 }).map((_, i) => (
             <button
               key={i}
               onClick={() => setStep(i)}
@@ -713,7 +685,7 @@ export default function DivergenceView() {
             opacity: 0.6,
           }}
         >
-          V: toggle view
+          V: toggle view · ← → navigate
         </div>
       </div>
 
