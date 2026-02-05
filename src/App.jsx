@@ -1,7 +1,7 @@
-import SIDVisualizer from "./components/SIDVisualizer";
+import DivergenceView from "./components/DivergenceView";
 
 function App() {
-  return <SIDVisualizer />;
+  return <DivergenceView />;
 }
 
 export default App;
